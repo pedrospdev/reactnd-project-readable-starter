@@ -1,26 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// Redux
+import { connect } from 'react-redux';
+import LoadingBar from 'react-redux-loading-bar';
+
+import Readable from './components/Readable';
+
+import { handleInitialData } from './actions/shared';
+
+import 'antd/dist/antd.css';
+import './index.css';
+
+class App extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(handleInitialData());
+  }
+
+  render () {
+    return (
+      <Readable />
+    );
+  }
 }
 
-export default App;
+function mapStateToProps ({ app, loadingBar }) {
+  return {
+    carregandoApp: loadingBar.app,
+    mainMenuCollapsed: app.mainMenuCollapsed
+  }
+}
+
+export default connect(mapStateToProps)(App);
